@@ -1,0 +1,5 @@
+pod "Qiniu","~>7.0"
+pod 'AVOSCloud'
+pod 'AVOSCloudIM'
+pod 'LeanCloudSocial'
+pod 'UMengSocial', '~> 4.3'
