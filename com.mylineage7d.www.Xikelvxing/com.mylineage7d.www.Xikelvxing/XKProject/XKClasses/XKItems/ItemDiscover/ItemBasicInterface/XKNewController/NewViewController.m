@@ -79,17 +79,15 @@
             [self.dataArray removeAllObjects];
             for (AVObject *ob in objects) {
                 NSMutableDictionary *dic = [ob objectForKey:@"localData"];
+                
                 DiscoverModel *model = [[DiscoverModel alloc] init];
-                model.updatedAt = ob[@"updatedAt"];
-                model.createdAt = ob[@"createdAt"];
                 
                 [model setValuesForKeysWithDictionary:dic];
-                NSMutableArray *array = [dic objectForKey:@"imageUrls"];
-                model.imageUrls = [NSArray arrayWithArray:array];
-                
-                AVGeoPoint *p = [dic objectForKey:@"location"];
-                model.location = p;
-                
+                model.updatedAt = ob[@"updatedAt"];
+                model.createdAt = ob[@"createdAt"];
+                model.imageUrls = [dic objectForKey:@"imageUrls"];
+                model.location = [dic objectForKey:@"location"];
+
                 AVQuery *query = [AVQuery queryWithClassName:@"_User"];
                 AVObject *user = [query getObjectWithId:[dic objectForKey:@"userId"]];
                 model.username = user[@"username"];

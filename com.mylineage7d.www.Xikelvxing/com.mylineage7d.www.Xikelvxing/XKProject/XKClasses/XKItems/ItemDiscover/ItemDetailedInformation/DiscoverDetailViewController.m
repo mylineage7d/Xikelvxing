@@ -80,10 +80,9 @@
     self.detailV.frame = CGRectMake(0, 64, Max_Width, self.detailV.frame.size.height);
     [UIView commitAnimations];
 }
+
 #pragma mark ---- 设置数据
 - (void)setDatas{
-    
-//    NSLog(@"%@",self.model.imageUrls);
     
     [self.detailV.headImage sd_setImageWithURL:[NSURL URLWithString:self.model.avatarUrl]];
     
@@ -92,6 +91,45 @@
     [self.detailV.main_pic sd_setImageWithURL:[NSURL URLWithString:self.model.imageUrls[0]]];
     
     self.detailV.content.text = self.model.content;
+    
+    AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
+    [query whereKey:@"momentId" equalTo:self.model.objectId];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+
+            // 检索成功
+            NSLog(@"Successfully retrieved %ld posts.", objects.count);
+            
+            
+            
+            NSMutableSet *set = [NSMutableSet set];
+            for (AVObject *ob in objects) {
+//                [array addObject:[ob objectForKey:@"userId"]];
+                [set addObject:[ob objectForKey:@"userId"]];
+            }
+            
+            NSArray *userArray = [set allObjects];
+            NSLog(@"user:%@",userArray);
+            
+//            NSMutableArray *array = [NSMutableArray new];
+            
+//            for (NSString *str in userArray) {
+//                AVQuery *query = [AVQuery queryWithClassName:@"User"];
+//                AVObject *post = [query getObjectWithId:str];
+//                [array addObject:[post objectForKey:@"avatarUrl"]];
+//            }
+            
+//            for (int i = 0; i < userArray.count; i++) {
+//                AVQuery *query = [AVQuery queryWithClassName:@"User"];
+//                AVObject *post = [query getObjectWithId:userArray[i]];
+//                UIImageView *imageV = [UIImageView alloc] initWithFrame:<#(CGRect)#>
+//            }
+            
+        } else {
+            // 输出错误信息
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
     
     [self.detailV layoutIfNeeded];
 }
@@ -110,6 +148,11 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark ---- 屏幕触摸方法
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.detailV.bottomTextField resignFirstResponder];
 }
 
 #pragma mark ---- ViewAppear

@@ -111,8 +111,12 @@
     } else if (indexPath.row < self.imageArray.count) {
         
         ALAsset *asset = self.imageArray[indexPath.row];
-        UIImage *tempImg = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+        
+        CGImageRef thumb = [asset thumbnail];
+        UIImage *tempImg = [UIImage imageWithCGImage:thumb];
+        
         [errorCorrectionCell.imV setImage:tempImg];
+    
         return errorCorrectionCell;
     } else {
         
@@ -221,7 +225,7 @@
                         
                         NSLog(@"tokenArr:%@",tokenArray);
                         
-                        // 图片地址
+                        // 图片地址数组
                         NSMutableArray *placeArray = [[NSMutableArray alloc] init];
                         
                         // 文件管理者

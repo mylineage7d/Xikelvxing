@@ -31,6 +31,7 @@
     self.main_pic = [[UIImageView alloc] init];
     self.content = [[UILabel alloc] init];
     self.heartButton = [UIButton new];
+    self.LikeV = [UIView new];
     self.bottomV = [UIView new];
     self.bottomTextField = [UITextField new];
 //    self.bottomTextView = [UITextView new];
@@ -43,6 +44,7 @@
     [self.scrollV addSubview:self.main_pic];
     [self.scrollV addSubview:self.content];
     [self.scrollV addSubview:self.heartButton];
+    [self.scrollV addSubview:self.LikeV];
     [self addSubview:self.bottomV];
     [self addSubview:self.bottomTextField];
 //    [self addSubview:self.bottomTextView];
@@ -85,7 +87,10 @@
     self.content.font = [UIFont systemFontOfSize:BriefFontSize];
     self.content.textAlignment = NSTextAlignmentCenter;
     [Tools setLabelCenter:self.content text:self.content.text fontSize:BriefFontSize originX:self.main_pic.center.x originY:CGRectGetMaxY(self.heartButton.frame)];
-
+    
+    self.LikeV.frame = CGRectMake(0, CGRectGetMaxY(self.content.frame) + 10, Max_Width, Button_Size);
+    self.LikeV.backgroundColor = [UIColor colorWithRed:1.000 green:0.912 blue:0.888 alpha:1.000];
+    
     self.bottomV.frame = CGRectMake(0, Max_Height - 40 - 64, Max_Width, 40);
     self.bottomV.backgroundColor = [UIColor whiteColor];
     
