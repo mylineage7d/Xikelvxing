@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @interface DiscoverModel : NSObject
-@property (nonatomic,strong)NSString *address; // 地址
+@property (nonatomic,copy)NSString *address; // 地址
 @property (nonatomic,strong)NSString *content; // 内容
 @property (nonatomic,strong)NSString *comments; // 评论人数
 @property (nonatomic,strong)NSString *likes; // 喜欢
@@ -26,4 +26,5 @@
 @property (nonatomic,strong)NSString *username; // 用户名
 @property (nonatomic,strong)NSString *avatarUrl; // 用户头像
 
+@property (nonatomic, copy) NSString *cellHeight;
 @end

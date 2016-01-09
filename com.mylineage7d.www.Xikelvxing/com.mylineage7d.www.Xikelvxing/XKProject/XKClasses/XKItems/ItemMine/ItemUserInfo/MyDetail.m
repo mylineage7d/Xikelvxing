@@ -76,18 +76,18 @@
     self.backIV.frame = CGRectMake(0, 0, Image_Width, Image_Width / 2.09);
     self.backIV.image = [UIImage imageNamed:@"avatar_background_sketch"];
     
-    self.userHeadIV.frame = CGRectMake(Left_Offset(10), self.backIV.frame.size.height - Botton_Offset(0) - Button_Size, Button_Size, Button_Size);
+    self.userHeadIV.frame = CGRectMake(Left_Offset(20), self.backIV.frame.size.height - Botton_Offset(10) - Button_Size, Button_Size, Button_Size);
     self.userHeadIV.layer.masksToBounds = YES;
     self.userHeadIV.layer.cornerRadius = Button_Size / 2;
     
-    self.userName.frame = CGRectMake(CGRectGetMaxX(self.userHeadIV.frame) + Left_Offset(0), self.userHeadIV.center.y - 17 / 2, 100, 17);
+    self.userName.frame = CGRectMake(CGRectGetMaxX(self.userHeadIV.frame) + Left_Offset(10), self.userHeadIV.center.y - 17 / 2, 100, 17);
 //    self.userName.text = @"他们不过将就_";
     [self.userName setTextColor:[UIColor whiteColor]];
     self.userName.font = [UIFont systemFontOfSize:17];
 //    [self.userName sizeToFit];
 //    self.userName.backgroundColor = [UIColor yellowColor];
     
-    self.title.frame = CGRectMake(Left_Offset(10), CGRectGetMaxY(self.backIV.frame) + Top_Offset(10), Max_Width - 20, 17);
+    self.title.frame = CGRectMake(Left_Offset(20), CGRectGetMaxY(self.backIV.frame) + Top_Offset(20), Max_Width - 20, 17);
     self.title.text = @"来了,都是稀客";
     [Tools setLabelOrigin:self.title fontSize:17];
     
@@ -95,36 +95,36 @@
     self.detailTitle.text = @"稀客旅行,是一个面向国人的韩国旅游服务.我们专注于韩国旅游市场,以自由行为核心,全国挖掘当地旅游咨询服务,让更多的国人感受到来自韩国的魅力";
     [Tools setLabelOrigin:self.detailTitle fontSize:17];
     
-    self.weiboV.frame = CGRectMake(self.title.frame.origin.x + Left_Offset(10), CGRectGetMaxY(self.detailTitle.frame) + Top_Offset(0), Max_Width - 60, 17);
+    self.weiboV.frame = CGRectMake(self.title.frame.origin.x + Left_Offset(20), CGRectGetMaxY(self.detailTitle.frame) + Top_Offset(10), Max_Width - 60, 17);
     self.weiboLogo.frame = CGRectMake(0, 0, 17, 17);
     self.weiboLogo.image = [UIImage imageNamed:@"login_panel_weibo_sketch"];
     self.weiboLabel.frame = CGRectMake(CGRectGetMaxX(self.weiboLogo.frame) + 4, self.weiboLogo.frame.origin.y, Max_Width - 60, 17);
     self.weiboLabel.text = @"关注微博@稀客旅行";
     [Tools setLabelOrigin:self.weiboLabel fontSize:17];
     
-    self.weChatV.frame = CGRectMake(self.title.frame.origin.x + Left_Offset(10), CGRectGetMaxY(self.weiboV.frame) + Top_Offset(0), Max_Width - 40, 17);
+    self.weChatV.frame = CGRectMake(self.title.frame.origin.x + Left_Offset(20), CGRectGetMaxY(self.weiboV.frame) + Top_Offset(10), Max_Width - 40, 17);
     self.weChatLogo.frame = CGRectMake(0, 0, 17, 17);
     self.weChatLogo.image = [UIImage imageNamed:@"login_panel_weixin_sketch"];
     self.weChatLabel.frame = CGRectMake(CGRectGetMaxX(self.weChatLogo.frame) + 4, self.weChatLogo.frame.origin.y, Max_Width - 60, 17);
     self.weChatLabel.text = @"关注公众号@稀客地图";
     [Tools setLabelOrigin:self.weChatLabel fontSize:17];
     
-    self.talkV.frame = CGRectMake(self.detailTitle.frame.origin.x + Left_Offset(0), CGRectGetMaxY(self.weChatV.frame) + Top_Offset(30), Max_Width - 20, 17);
+    self.talkV.frame = CGRectMake(self.detailTitle.frame.origin.x + Left_Offset(10), CGRectGetMaxY(self.weChatV.frame) + Top_Offset(30), Max_Width - 20, 17);
     self.talkLogo.frame = CGRectMake(0, 0, 17, 17);
     self.talkLogo.image = [UIImage imageNamed:@"icon_talk_sketch"];
     self.talkLabel.frame = CGRectMake(CGRectGetMaxX(self.talkLogo.frame) + 4, self.talkLogo.frame.origin.y, Max_Width - 60, 17);
     self.talkLabel.text = @"和我们聊聊";
     [Tools setLabelOrigin:self.talkLabel fontSize:17];
     
-    self.shareAppV.frame = CGRectMake(self.detailTitle.frame.origin.x + Left_Offset(0), CGRectGetMaxY(self.talkV.frame) + Top_Offset(10), Max_Width - 40, 17);
+    self.shareAppV.frame = CGRectMake(self.detailTitle.frame.origin.x + Left_Offset(10), CGRectGetMaxY(self.talkV.frame) + Top_Offset(10), Max_Width - 40, 17);
     self.shareLogo.frame = CGRectMake(0, 0, 17, 17);
     self.shareLogo.image = [UIImage imageNamed:@"icon_share_sketch"];
     self.shareLabel.frame = CGRectMake(CGRectGetMaxX(self.weiboLogo.frame) + 4, self.weiboLogo.frame.origin.y, Max_Width - 60, 17);
     self.shareLabel.text = @"分享应用";
     [Tools setLabelOrigin:self.shareLabel fontSize:17];
     
-    self.exitButton.frame = CGRectMake(Max_Width / 2 - 120 / 2, Max_Height - 49 - 40 - Botton_Offset(0), 120, 30);
-    self.exitButton.center = CGPointMake(Max_Width / 2, Max_Height - 49 - 40 / 2 - Botton_Offset(0));
+    self.exitButton.frame = CGRectMake(Max_Width / 2 - 120 / 2, Max_Height - 49 - 40 - Botton_Offset(10), 120, 30);
+    self.exitButton.center = CGPointMake(Max_Width / 2, Max_Height - 49 - 40 / 2 - Botton_Offset(10));
     [self.exitButton setTitle:@"退出当前账号" forState:UIControlStateNormal];
     [self.exitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.exitButton setFont:[UIFont systemFontOfSize:15]];

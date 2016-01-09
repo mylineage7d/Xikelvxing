@@ -85,6 +85,7 @@
                 [model setValuesForKeysWithDictionary:dic];
                 model.updatedAt = ob[@"updatedAt"];
                 model.createdAt = ob[@"createdAt"];
+                model.objectId = ob[@"objectId"];
                 model.imageUrls = [dic objectForKey:@"imageUrls"];
                 model.location = [dic objectForKey:@"location"];
 
@@ -92,6 +93,13 @@
                 AVObject *user = [query getObjectWithId:[dic objectForKey:@"userId"]];
                 model.username = user[@"username"];
                 model.avatarUrl = user[@"avatarUrl"];
+                
+                UILabel *content = [[UILabel alloc] init];
+                content.frame = CGRectMake(0,0, Max_Width - 20, 16);
+                content.textAlignment = NSTextAlignmentCenter;
+                content.text = model.content;
+                [Tools setLabelHeight:content text:content.text fontSize:16];
+                model.cellHeight = [NSString stringWithFormat:@"%f",Top_Offset(10) + Button_Size + 10 + Image_Height + 10 + content.frame.size.height + 10 + 17 + 10];
                 
                 [self.dataArray addObject:model];
                 
@@ -126,18 +134,23 @@
                 DiscoverModel *model = [[DiscoverModel alloc] init];
                 model.updatedAt = ob[@"updatedAt"];
                 model.createdAt = ob[@"createdAt"];
+                model.objectId = ob[@"objectId"];
+                model.imageUrls = [dic objectForKey:@"imageUrls"];
+                model.location = [dic objectForKey:@"location"];
                 
                 [model setValuesForKeysWithDictionary:dic];
-                NSMutableArray *array = [dic objectForKey:@"imageUrls"];
-                model.imageUrls = [NSArray arrayWithArray:array];
-                
-                AVGeoPoint *p = [dic objectForKey:@"location"];
-                model.location = p;
                 
                 AVQuery *query = [AVQuery queryWithClassName:@"_User"];
                 AVObject *user = [query getObjectWithId:[dic objectForKey:@"userId"]];
                 model.username = user[@"username"];
                 model.avatarUrl = user[@"avatarUrl"];
+                
+                UILabel *content = [[UILabel alloc] init];
+                content.frame = CGRectMake(0,0, Max_Width - 20, 16);
+                content.textAlignment = NSTextAlignmentCenter;
+                content.text = model.content;
+                [Tools setLabelHeight:content text:content.text fontSize:16];
+                model.cellHeight = [NSString stringWithFormat:@"%f",Top_Offset(10) + Button_Size + 10 + Image_Height + 10 + content.frame.size.height + 10 + 17 + 10];
                 
                 [self.dataArray addObject:model];
                 
@@ -196,7 +209,8 @@
 
 // Cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [DiscoverTableViewCell cellHeight:self.dataArray[indexPath.row]];
+    DiscoverModel *model = self.dataArray[indexPath.row];
+    return [model.cellHeight floatValue];
 }
 
 #pragma mark ---- cell里的控件方法

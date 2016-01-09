@@ -16,8 +16,8 @@
 @property (nonatomic,strong)UILabel *dateLabel; //日期
 @property (nonatomic,strong)UIImageView *main_pic; // 图片
 @property (nonatomic,strong)UILabel *content; // 详情内容
-@property (nonatomic,strong)UIButton *heartButton; //收藏
-@property (nonatomic, strong)UIView *LikeV;
+@property (nonatomic,strong)UIButton *heartButton; // 收藏
+@property (nonatomic, strong)UIScrollView *scrollLikeV; // 收藏scroll
 
 @property (nonatomic,strong)UIView *bottomV;
 //@property (nonatomic,strong)UITextView *bottomTextView;

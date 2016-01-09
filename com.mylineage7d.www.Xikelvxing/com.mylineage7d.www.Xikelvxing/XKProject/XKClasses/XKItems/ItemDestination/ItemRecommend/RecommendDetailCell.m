@@ -50,7 +50,7 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     
-    self.nameNumberLabel.frame = CGRectMake(Left_Offset(0), Top_Offset(0), 30, 20);
+    self.nameNumberLabel.frame = CGRectMake(Left_Offset(10), Top_Offset(10), 30, 20);
     self.nameNumberLabel.font = [UIFont systemFontOfSize:16];
     
     self.nameLabel.frame = CGRectMake(CGRectGetMaxX(self.nameNumberLabel.frame), self.nameNumberLabel.frame.origin.y, Max_Width - 30, NameFontSize);
@@ -74,7 +74,7 @@
          self.briefLabel.frame = CGRectMake(self.nameNumberLabel.frame.origin.x, CGRectGetMaxY(self.addressImage.frame) + 10, Max_Width - 20, 0);
     }
     
-    self.shareButton.frame = CGRectMake(self.main_pic.frame.origin.x + Left_Offset(0), CGRectGetMaxY(self.briefLabel.frame) + Top_Offset(0), 17 + 4 + 32, 17);
+    self.shareButton.frame = CGRectMake(self.main_pic.frame.origin.x + Left_Offset(10), CGRectGetMaxY(self.briefLabel.frame) + Top_Offset(10), 17 + 4 + 32, 17);
     [self.shareButton setImage:[UIImage imageNamed:@"icon_share_sketch"] forState:UIControlStateNormal];
     [self.shareButton setTitle:@"分享" forState:UIControlStateNormal];
     [self.shareButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

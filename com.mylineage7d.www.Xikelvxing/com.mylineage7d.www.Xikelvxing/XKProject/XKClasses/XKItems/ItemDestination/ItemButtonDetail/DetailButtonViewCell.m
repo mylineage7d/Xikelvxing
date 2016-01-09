@@ -30,7 +30,7 @@
     self.localname = [UILabel labelWithFrame:CGRectMake(self.name.frame.origin.x, CGRectGetMaxY(self.name.frame), 10, 10) fontSize:PlaceNumSize lineBreak:NO];
     self.localname.alpha = 0.8;
     
-    self.type = [[UILabel alloc] initWithFrame:CGRectMake(self.name.frame.origin.x, CGRectGetMaxY(self.main_pic.frame) - PlaceNumSize, self.name.frame.size.width - Right_Offset(0),PlaceNumSize)];
+    self.type = [[UILabel alloc] initWithFrame:CGRectMake(self.name.frame.origin.x, CGRectGetMaxY(self.main_pic.frame) - PlaceNumSize, self.name.frame.size.width - Right_Offset(10),PlaceNumSize)];
     self.type.font = [UIFont systemFontOfSize:PlaceNumSize];
     self.type.alpha = 0.5;
     

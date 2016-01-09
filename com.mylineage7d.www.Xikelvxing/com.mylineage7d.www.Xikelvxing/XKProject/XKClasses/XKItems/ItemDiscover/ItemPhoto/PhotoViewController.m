@@ -101,7 +101,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = YES;
 //    self.tabBarController.tabBar.hidden = YES;
@@ -109,7 +108,7 @@
     for (int i = 0; i < self.imageArray.count; i++) {
         UIScrollView *scroll = [self.photoV.scrollV subviews][i];
         scroll.delegate = self;
-        scroll.maximumZoomScale = 2.0;
+        scroll.maximumZoomScale = 3;
 //        scroll.minimumZoomScale = 0.5;
     }
     self.photoV.scrollV.delegate = self;

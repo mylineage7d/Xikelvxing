@@ -16,18 +16,6 @@
 @property (nonatomic,strong)UIImageView *main_pic; // 图片
 @property (nonatomic,strong)UILabel *content; // 详情内容
 
-//@property (nonatomic,strong)UIView *shareV; // 分享按钮
-//@property (nonatomic,strong)UIImageView *shareIV; // 分享按钮
-//@property (nonatomic,strong)UILabel *shareLabel; //分享数
-//
-//@property (nonatomic,strong)UIView *commentsV; // 评论按钮
-//@property (nonatomic,strong)UIImageView *commentsIV; // 评论按钮
-//@property (nonatomic,strong)UILabel *commentsLabel; // 评论人数
-//
-//@property (nonatomic,strong)UIView *heartV; // 点赞按钮
-//@property (nonatomic,strong)UIImageView *heartIV; // 点赞按钮
-//@property (nonatomic,strong)UILabel *heartLabel; // 点赞
-
 @property (nonatomic, strong)UIButton *shareButton; // 分享按钮
 @property (nonatomic, strong)UIButton *commentsButton; // 评论按钮
 @property (nonatomic, strong)UIButton *heartButton; // 点赞按钮
@@ -38,7 +26,5 @@
 //@property (nonatomic,strong)UILabel *num;
 @property (nonatomic,assign)NSInteger index; // 标记
 @property (nonatomic,strong)NSString *imageUrl;
-
-+(CGFloat)cellHeight:(DiscoverModel *)model;
 
 @end

@@ -59,15 +59,15 @@
     [self.selectLabel sizeToFit];
     self.selectLabel.center = CGPointMake(Max_Width / 2, Max_Height - 100 - self.selectLabel.frame.size.height);
     
-    self.weChatButton.frame = CGRectMake(Max_Width / 2 - Button_Size * 1.5 - 40, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(0), Button_Size, Button_Size);
+    self.weChatButton.frame = CGRectMake(Max_Width / 2 - Button_Size * 1.5 - 40, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(10), Button_Size, Button_Size);
     self.weChatButton.layer.cornerRadius = Button_Size / 2;
     [self.weChatButton setImage:[UIImage imageNamed:@"sns_wechat_sketch"] forState:UIControlStateNormal];
     
-    self.qqButton.frame = CGRectMake(Max_Width / 2 - Button_Size / 2, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(0), Button_Size, Button_Size);
+    self.qqButton.frame = CGRectMake(Max_Width / 2 - Button_Size / 2, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(10), Button_Size, Button_Size);
     self.qqButton.layer.cornerRadius = Button_Size / 2;
     [self.qqButton setImage:[UIImage imageNamed:@"sns_qq_sketch"] forState:UIControlStateNormal];
     
-    self.weiboButton.frame = CGRectMake(CGRectGetMaxX(self.qqButton.frame) + 40, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(0), Button_Size, Button_Size);
+    self.weiboButton.frame = CGRectMake(CGRectGetMaxX(self.qqButton.frame) + 40, CGRectGetMaxY(self.selectLabel.frame) + Top_Offset(10), Button_Size, Button_Size);
     self.weiboButton.layer.cornerRadius = Button_Size / 2;
     [self.weiboButton setImage:[UIImage imageNamed:@"sns_sina_weibo_sketch"] forState:UIControlStateNormal];
 }

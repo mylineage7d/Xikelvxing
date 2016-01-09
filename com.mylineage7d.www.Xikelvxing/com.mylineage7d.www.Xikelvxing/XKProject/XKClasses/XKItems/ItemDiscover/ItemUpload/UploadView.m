@@ -29,7 +29,7 @@
     self.flowLayout.itemSize = CGSizeMake(80, 80);
     self.flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     
-    self.label.frame = CGRectMake(Left_Offset(-3), Top_Offset(64 + 8), Max_Width - 14, 17);
+    self.label.frame = CGRectMake(Left_Offset(7), Top_Offset(64 + 18), Max_Width - 14, 17);
     self.label.font = [UIFont systemFontOfSize:17];
     self.label.alpha = 0.3;
     self.label.backgroundColor = TableView_Color;
@@ -37,7 +37,7 @@
     self.label.enabled = NO;
     [self.label sizeToFit];
     
-    self.textView.frame = CGRectMake(Left_Offset(-7), Top_Offset(64), Max_Width - 6, Max_Height / 2 - 100 - 64);
+    self.textView.frame = CGRectMake(Left_Offset(3), Top_Offset(64 + 10), Max_Width - 6, Max_Height / 2 - 100 - 64);
     self.textView.backgroundColor = TableView_Color;
     self.textView.font = [UIFont systemFontOfSize:17];
     

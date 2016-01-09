@@ -10,7 +10,7 @@
 #import "PhotoViewController.h"
 
 @interface DiscoverDetailViewController ()<UITextFieldDelegate>
-
+@property (nonatomic ,strong) NSMutableArray *tagArray;
 @end
 
 @implementation DiscoverDetailViewController
@@ -36,15 +36,66 @@
 #pragma mark ---- 设置Views
 - (void)setViews {
     
+    self.tagArray = [[NSMutableArray alloc] init];
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageAction)];
     [self.detailV.main_pic addGestureRecognizer:tap];
+    
+    [self.detailV.heartButton addTarget:self action:@selector(heartButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-// Tap点击方法
+// 点击图片方法
 - (void)tapImageAction {
     PhotoViewController *photoVC = [PhotoViewController new];
     photoVC.imageArray = self.model.imageUrls;
     [self.navigationController pushViewController:photoVC animated:YES];
+}
+
+// 点赞方法
+- (void)heartButtonAction:(UIButton *)sender {
+    
+    AVUser *user = [AVUser currentUser];
+    NSLog(@"userId:%@",user.objectId);
+    
+    if (sender.selected == NO) {
+        sender.selected = YES;
+        [sender setImage:[UIImage imageNamed:@"action_love_fill_sketch"] forState:UIControlStateNormal];
+        
+        if (user != nil) {
+            AVObject *post = [AVObject objectWithClassName:@"MomentLike"];
+            [post setObject:self.model.objectId forKey:@"momentId"];
+            [post setObject:user.objectId forKey:@"userId"];
+            [post save];
+            
+            [self setDatas];
+            
+        } else {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                           message:@"请先登录"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }]];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    } else {
+        sender.selected = NO;
+        [sender setImage:[UIImage imageNamed:@"action_love_sketch"] forState:UIControlStateNormal];
+        
+        AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
+        [query whereKey:@"userId" equalTo:user.objectId];
+        [query whereKey:@"momentId" equalTo:self.model.objectId];
+        [query getFirstObjectInBackgroundWithBlock:^(AVObject *object, NSError *error) {
+            [object deleteInBackground];
+        }];
+        
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+            [self setDatas];
+            NSInteger num = [[self.tagArray lastObject] integerValue];
+            [[self.detailV.scrollV viewWithTag:num] removeFromSuperview];
+//        });
+    }
 }
 
 #pragma mark ---- 设置通知
@@ -92,38 +143,57 @@
     
     self.detailV.content.text = self.model.content;
     
+    AVUser *user = [AVUser currentUser];
+    
     AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
     [query whereKey:@"momentId" equalTo:self.model.objectId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-
-            // 检索成功
-            NSLog(@"Successfully retrieved %ld posts.", objects.count);
             
+            NSLog(@"id:%@",self.model.objectId);
             
+            NSMutableArray *userArray = [[NSMutableArray alloc] init];
+            NSMutableArray *array = [[NSMutableArray alloc] init];
             
-            NSMutableSet *set = [NSMutableSet set];
             for (AVObject *ob in objects) {
-//                [array addObject:[ob objectForKey:@"userId"]];
-                [set addObject:[ob objectForKey:@"userId"]];
+                [array addObject:[ob objectForKey:@"userId"]];
             }
             
-            NSArray *userArray = [set allObjects];
-            NSLog(@"user:%@",userArray);
+            NSMutableArray *array2 = [self compareNum:array];
+//            NSLog(@"array:%@",array2);
+
+            for (int i = (int)array2.count; i > 0; i--) {
+                [userArray addObject:array2[i - 1]];
+            }
+
+//            NSLog(@"user:%@",userArray);
             
-//            NSMutableArray *array = [NSMutableArray new];
+            self.detailV.scrollLikeV.contentSize = CGSizeMake((10 + Button_Size) * userArray.count, Button_Size);
+   
+            for (int i = 0; i < userArray.count; i++) {
+                AVQuery *query = [AVQuery queryWithClassName:@"_User"];
+                AVObject *post = [query getObjectWithId:userArray[i]];
+                NSString *imageUrl = [post objectForKey:@"avatarUrl"];
+                
+                UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake((10 + Button_Size) * i, 0, Button_Size, Button_Size)];
+                imageV.layer.masksToBounds = YES;
+                imageV.layer.cornerRadius = Button_Size / 2;
+                imageV.tag = 200 + i;
+                [self.tagArray addObject:[NSNumber numberWithInteger:imageV.tag]];
+                imageV.backgroundColor = [UIColor colorWithRed:0.813 green:0.941 blue:0.630 alpha:1.000];
+                [imageV sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                
+                [self.detailV.scrollLikeV addSubview:imageV];
+                
+                if (user != nil) {
+                    if ([userArray[i] isEqualToString:user.objectId]) {
+                        self.detailV.heartButton.selected = YES;
+                        [self.detailV.heartButton setImage:[UIImage imageNamed:@"action_love_fill_sketch"] forState:UIControlStateNormal];
+                    }
+                }
+            }
             
-//            for (NSString *str in userArray) {
-//                AVQuery *query = [AVQuery queryWithClassName:@"User"];
-//                AVObject *post = [query getObjectWithId:str];
-//                [array addObject:[post objectForKey:@"avatarUrl"]];
-//            }
             
-//            for (int i = 0; i < userArray.count; i++) {
-//                AVQuery *query = [AVQuery queryWithClassName:@"User"];
-//                AVObject *post = [query getObjectWithId:userArray[i]];
-//                UIImageView *imageV = [UIImageView alloc] initWithFrame:<#(CGRect)#>
-//            }
             
         } else {
             // 输出错误信息
@@ -132,6 +202,63 @@
     }];
     
     [self.detailV layoutIfNeeded];
+}
+
+//比较是否相等
+-(NSMutableArray *)compareNum:(NSMutableArray *)mArr
+{
+    NSInteger count = mArr.count;//重新定义了,count不会减一
+    for (int j = 0; j < count - 1; j++)
+    {
+        for (int i = j; i < count - 1 - 1; i++)
+        {
+//            NSLog(@" %@  %@",[mArr objectAtIndex:j],[mArr objectAtIndex:i + 2]);
+            NSString *a = [mArr objectAtIndex:j];
+            NSString *b = [mArr objectAtIndex:i + 2];
+            
+            if ([a isEqualToString:b])
+            {
+                [mArr replaceObjectAtIndex:i + 2 withObject:@" "];
+            }
+        }
+    }
+    
+    NSMutableArray *removeStrs1 = [NSMutableArray array];
+    
+    for (NSString *str in mArr) {
+        if ([str isEqualToString:@" "]) {
+            [removeStrs1 addObject:str];
+        }
+    }
+    
+    for (NSString *st in removeStrs1) {
+        [mArr removeObject:st];
+    }
+    
+    for (int j = 0; j < mArr.count - 1; j++) {
+        
+        NSString *a = [mArr objectAtIndex:j];
+        NSString *b = [mArr objectAtIndex:j + 1];
+        
+        if ([a isEqualToString:b])
+        {
+            [mArr replaceObjectAtIndex:j + 1 withObject:@" "];
+        }
+    }
+    
+    NSMutableArray *removeStrs2 = [NSMutableArray array];
+    
+    for (NSString *str in mArr) {
+        if ([str isEqualToString:@" "]) {
+            [removeStrs2 addObject:str];
+        }
+    }
+    
+    for (NSString *st in removeStrs2) {
+        [mArr removeObject:st];
+    }
+    
+    return mArr;
 }
 
 #pragma mark ---- UITextView代理方法

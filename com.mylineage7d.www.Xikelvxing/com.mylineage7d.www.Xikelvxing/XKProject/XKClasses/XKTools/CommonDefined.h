@@ -41,7 +41,7 @@
 #define Image_Height ([UIScreen mainScreen].bounds.size.width / 3 * 2)
 
 // NavBar
-#define NAVBAR_CHANGE_POINT 50
+#define NAVBAR_CHANGE_POINT ([UIScreen mainScreen].bounds.size.width / 3 * 2) - 84 * 2
 
 // tableView颜色
 #define TableView_Color [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1]
@@ -50,10 +50,10 @@
 #define NavBar_Color [UIColor colorWithRed:0/255.0 green:182/255.0 blue:250/255.0 alpha:1]
 
 // 基本约束
-#define Top_Offset(...) (10 + ((__VA_ARGS__)))
-#define Left_Offset(...) (10 + ((__VA_ARGS__)))
-#define Botton_Offset(...) (10 + ((__VA_ARGS__)))
-#define Right_Offset(...) (10 + ((__VA_ARGS__)))
+#define Top_Offset(...) (0 + ((__VA_ARGS__)))
+#define Left_Offset(...) (0 + ((__VA_ARGS__)))
+#define Botton_Offset(...) (0 + ((__VA_ARGS__)))
+#define Right_Offset(...) (0 + ((__VA_ARGS__)))
 
 
 #endif /* CommonDefined_h */

@@ -73,7 +73,7 @@ static Tools *tool = nil;
     label.numberOfLines = 0;
     [label sizeToFit];
     [self setLabelHeight:label text:string fontSize:fontSize];
-    label.center = CGPointMake(originX, originY + label.frame.size.height / 2 + Top_Offset(0));
+    label.center = CGPointMake(originX, originY + label.frame.size.height / 2 + Top_Offset(10));
 }
 
 #pragma mark --- 计算Label的中心点和高度改良版
@@ -81,7 +81,7 @@ static Tools *tool = nil;
     label.numberOfLines = 0;
     [label sizeToFit];
     [self setLabelHeight:label text:label.text fontSize:fontSize];
-    label.center = CGPointMake(originX, originY + label.frame.size.height / 2 + Top_Offset(0));
+    label.center = CGPointMake(originX, originY + label.frame.size.height / 2 + Top_Offset(10));
 }
 
 @end

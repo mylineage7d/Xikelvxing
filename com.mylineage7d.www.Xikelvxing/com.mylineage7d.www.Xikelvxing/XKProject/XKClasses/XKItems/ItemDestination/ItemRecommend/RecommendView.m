@@ -33,7 +33,7 @@
     
     self.title = [UILabel labelWithFrame:CGRectMake(10, CGRectGetMaxY(self.headButton.frame), Max_Width - 20, 0) fontSize:17 lineBreak:YES];
     
-    self.content = [UILabel labelWithFrame:CGRectMake(10, CGRectGetMaxY(self.title.frame) + Top_Offset(0), self.title.frame.size.width, 100) fontSize:16 lineBreak:YES];
+    self.content = [UILabel labelWithFrame:CGRectMake(10, CGRectGetMaxY(self.title.frame) + Top_Offset(10), self.title.frame.size.width, 100) fontSize:16 lineBreak:YES];
     
     self.leftNavBarView = [[NavBarLB alloc] initWithFrame:CGRectMake(0, 0, Max_Width / 3, 30)];
     self.leftNavBarView.navBarLabel.text = @"推荐攻略";

@@ -36,7 +36,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.headImage.frame = CGRectMake(Left_Offset(0), Top_Offset(0), [UIScreen mainScreen].bounds.size.width / 9, [UIScreen mainScreen].bounds.size.width / 9);
+    self.headImage.frame = CGRectMake(Left_Offset(10), Top_Offset(10), [UIScreen mainScreen].bounds.size.width / 9, [UIScreen mainScreen].bounds.size.width / 9);
     self.headImage.layer.cornerRadius = self.headImage.frame.size.width / 2;
     self.headImage.layer.masksToBounds = YES;
     //    self.headImage.image = [UIImage imageNamed:@"logo_512_sketch"];
@@ -45,12 +45,12 @@
     //    self.nameLabel.text = @"稀客旅行";
     [Tools setLabelOrigin:self.nameLabel text:self.nameLabel.text fontSize:NameFontSize originX:CGRectGetMaxX(self.headImage.frame) + 5 originY:(self.headImage.frame.size.height - self.nameLabel.frame.size.height) / 2 + 10];
     
-    self.dateLabel.frame = CGRectMake(Max_Width - Right_Offset(0) - 37, self.nameLabel.frame.origin.y, 50, self.nameLabel.frame.size.height);
+    self.dateLabel.frame = CGRectMake(Max_Width - Right_Offset(10) - 37, self.nameLabel.frame.origin.y, 50, self.nameLabel.frame.size.height);
     self.dateLabel.font = [UIFont systemFontOfSize:14];
     self.dateLabel.alpha = 0.5;
     [self.dateLabel sizeToFit];
     
-    self.commentLabel.frame = CGRectMake(self.headImage.frame.origin.x, CGRectGetMaxY(self.headImage.frame) + Top_Offset(0), Max_Width - 20, 17);
+    self.commentLabel.frame = CGRectMake(self.headImage.frame.origin.x, CGRectGetMaxY(self.headImage.frame) + Top_Offset(10), Max_Width - 20, 17);
     [Tools setLabelOrigin:self.commentLabel fontSize:NameFontSize];
 }
 

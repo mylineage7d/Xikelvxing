@@ -25,11 +25,10 @@
     
     self.backgroundColor = [UIColor whiteColor];
     
-    self.imageUrl = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10,Max_Width / 3 ,Max_Width / 3 / 4 * 3)];
+    self.imageUrl = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Offset(10), Top_Offset(10),Max_Width / 3 ,Max_Width / 3 / 4 * 3)];
     
-    self.title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageUrl.frame) + 8, self.imageUrl.frame.origin.y,Max_Width - self.imageUrl.frame.size.width - 24,TitleSize)];
+    self.title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageUrl.frame) + Left_Offset(8), self.imageUrl.frame.origin.y, Max_Width - self.imageUrl.frame.size.width - 20 - 8,self.imageUrl.frame.size.height / 2)];
     self.title.font = [UIFont systemFontOfSize:TitleSize];
-    self.title.numberOfLines = 0;
     
     self.placeNum = [[UILabel alloc] initWithFrame:CGRectMake(self.title.frame.origin.x, CGRectGetMaxY(self.imageUrl.frame) - PlaceNumSize, self.title.frame.size.width / 3 * 2,PlaceNumSize)];
     self.placeNum.font = [UIFont systemFontOfSize:PlaceNumSize];

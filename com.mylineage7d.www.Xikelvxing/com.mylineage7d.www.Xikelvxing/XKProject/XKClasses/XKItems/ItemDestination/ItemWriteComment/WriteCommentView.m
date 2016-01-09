@@ -32,7 +32,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.label.frame = CGRectMake(Left_Offset(-3), Top_Offset(64 + 7), Max_Width - 14, 17);
+    self.label.frame = CGRectMake(Left_Offset(7), Top_Offset(64 + 17), Max_Width - 14, 17);
     self.label.font = [UIFont systemFontOfSize:17];
     self.label.alpha = 0.3;
     self.label.backgroundColor = TableView_Color;
@@ -40,7 +40,7 @@
     self.label.enabled = NO;
     [self.label sizeToFit];
 
-    self.textView.frame = CGRectMake(Left_Offset(-7), Top_Offset(64), Max_Width - 6, Max_Height);
+    self.textView.frame = CGRectMake(Left_Offset(3), Top_Offset(64 + 10), Max_Width - 6, Max_Height);
     self.textView.backgroundColor = TableView_Color;
     self.textView.font = [UIFont systemFontOfSize:17];
 }
