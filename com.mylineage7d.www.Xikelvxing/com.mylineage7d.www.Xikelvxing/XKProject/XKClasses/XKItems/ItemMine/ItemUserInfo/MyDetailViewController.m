@@ -24,7 +24,7 @@
     self.user = [AVUser currentUser];
     
     // 根据状态跳转
-//    [self setState];
+    [self setStatus];
     
     // 设置button事件
     [self setButtonActions];
@@ -34,31 +34,59 @@
 }
 
 #pragma mark ---- 根据状态
-- (void)setState {
+- (void)setStatus {
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    [userDefaults setObject:@"login" forKey:@"state"];
-    
-    [userDefaults synchronize];
-    
-    if ([[userDefaults objectForKey:@"controller"] isEqualToString:@"RecCellDetailViewController"]) {
-        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:2] animated:YES];
+    if ([[userDefaults objectForKey:@"status"] isEqualToString:@"login"]) {
+        [self.myDetailV.userHeadIV sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"headUrl"]]];
+        self.myDetailV.userName.text = [userDefaults objectForKey:@"username"];
+        
+        NSLog(@"status:%@",[userDefaults objectForKey:@"status"]);
+        NSLog(@"username:%@",[userDefaults objectForKey:@"username"]);
+        NSLog(@"url:%@",[userDefaults objectForKey:@"headUrl"]);
+        
+        [self.myDetailV layoutIfNeeded];
     }
 }
 
 #pragma mark ---- 设置数据
 - (void)setData {
     
-//    NSLog(@"%@",self.info);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    NSString *imageUrl = [[self.info objectForKey:@"raw-user"] objectForKey:@"avatar_hd"];
-    
-    [self.myDetailV.userHeadIV sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
-    self.myDetailV.userName.text = [self.info objectForKey:@"username"];
-    [self.myDetailV.userName sizeToFit];
-    
-    [self.myDetailV layoutIfNeeded];
+    if ([[userDefaults objectForKey:@"status"] isEqualToString:@"logout"]) {
+        NSString *imageUrl = [[NSString alloc] init];
+        
+        if ([self.sourceVC isEqualToString:@"weibo"]) {
+            imageUrl = [[self.info objectForKey:@"raw-user"] objectForKey:@"avatar_hd"];
+        } else if ([self.sourceVC isEqualToString:@"qq"]) {
+            imageUrl = [[self.info objectForKey:@"raw-user"] objectForKey:@"headimgurl"];
+        } else {
+            imageUrl = [[self.info objectForKey:@"raw-user"] objectForKey:@"headimgurl"];
+        }
+        
+        [self.myDetailV.userHeadIV sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+        self.myDetailV.userName.text = [self.info objectForKey:@"username"];
+        //    [self.myDetailV.userName sizeToFit];
+        
+        [self.myDetailV layoutIfNeeded];
+        
+        AVUser *user = [AVUser currentUser];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        [userDefaults setObject:@"login" forKey:@"status"];
+        [userDefaults setObject:user.objectId forKey:@"objectId"];
+        [userDefaults setObject:imageUrl forKey:@"headUrl"];
+        [userDefaults setObject:[self.info objectForKey:@"username"] forKey:@"username"];
+        
+        [userDefaults synchronize];
+        
+        
+//        NSLog(@"username:%@",[userDefaults objectForKey:@"username"]);
+//        NSLog(@"url:%@",[userDefaults objectForKey:@"headUrl"]);
+    }
 }
 
 // 设置按钮事件
@@ -98,13 +126,14 @@
     
     [AVUser logOut];
     
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    
-//    [userDefaults setObject:@"nil" forKey:@"state"];
-//    [userDefaults setObject:@"nil" forKey:@"controller"];
-//    [userDefaults setObject:@"nil" forKey:@"SNS"];
-//    
-//    [userDefaults synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setObject:@"logout" forKey:@"status"];
+    [userDefaults setObject:@"" forKey:@"objectId"];
+    [userDefaults setObject:@"" forKey:@"headUrl"];
+    [userDefaults setObject:@"" forKey:@"username"];
+    
+    [userDefaults synchronize];
     
     NSLog(@"退出登录");
     

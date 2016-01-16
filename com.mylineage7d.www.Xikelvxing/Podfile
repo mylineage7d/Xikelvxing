@@ -3,3 +3,5 @@ pod 'AVOSCloud'
 pod 'AVOSCloudIM'
 pod 'LeanCloudSocial'
 pod 'UMengSocial', '~> 4.3'
+pod "YYKit"
+pod 'MJRefresh'

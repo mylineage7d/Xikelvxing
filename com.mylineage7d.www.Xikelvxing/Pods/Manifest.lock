@@ -27,17 +27,23 @@ PODS:
   - LeanCloudSocial (0.0.8):
     - AFNetworking (~> 2.0)
     - AVOSCloud (~> 3.1)
+  - MJRefresh (3.1.0)
   - Qiniu (7.0.16):
     - AFNetworking (~> 2.0)
     - HappyDNS (~> 0.2)
   - UMengSocial (4.4)
+  - YYKit (0.9.10):
+    - YYKit/no-arc (= 0.9.10)
+  - YYKit/no-arc (0.9.10)
 
 DEPENDENCIES:
   - AVOSCloud
   - AVOSCloudIM
   - LeanCloudSocial
+  - MJRefresh
   - Qiniu (~> 7.0)
   - UMengSocial (~> 4.3)
+  - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -45,7 +51,9 @@ SPEC CHECKSUMS:
   AVOSCloudIM: 4ea51fcce5e9f971140b1784055286fe987c8593
   HappyDNS: 6d85942e64c28b4fa61f8c76580398f52d6d1d11
   LeanCloudSocial: f7787dfc1559dc47263bbfd37a03c870352ad98a
+  MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
   Qiniu: 51a8702cddc02b50867e10cef99291b9a8a006b1
   UMengSocial: aba7296602310385114d82c255539a7bef3b7ab0
+  YYKit: c220d01f6fe9fd4b4b379e2dad50fffd2b2ce633
 
 COCOAPODS: 0.39.0

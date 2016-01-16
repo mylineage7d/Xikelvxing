@@ -31,6 +31,10 @@
     // 友盟
     [UMSocialData setAppKey:@"5662a16f67e58e8237000507"];
     
+    [UMSocialQQHandler setQQWithAppId:@"1104777499" appKey:@"7kc63hIUUoewwcU0" url:@"http://www.umeng.com/social"];
+    
+    [UMSocialWechatHandler setWXAppId:@"wx21b45e4600d18412" appSecret:@"fce1c892c1d61fafb1750268faaf9c6c" url:@"http://www.umeng.com/social"];
+    
 //    [ShuClient initSharedInstanceWithKey:@"cf08bc5c6d879230993493cedf7afdf20bea389c" projectID:@"3a8bfeef9d"];
 //    [[ShuClient sharedInstance] track:@"ios_launched" properties:nil];
 //    [[ShuClient sharedInstance] flushQueue];

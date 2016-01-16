@@ -84,7 +84,7 @@
 //    self.userName.text = @"他们不过将就_";
     [self.userName setTextColor:[UIColor whiteColor]];
     self.userName.font = [UIFont systemFontOfSize:17];
-//    [self.userName sizeToFit];
+    [self.userName sizeToFit];
 //    self.userName.backgroundColor = [UIColor yellowColor];
     
     self.title.frame = CGRectMake(Left_Offset(20), CGRectGetMaxY(self.backIV.frame) + Top_Offset(20), Max_Width - 20, 17);

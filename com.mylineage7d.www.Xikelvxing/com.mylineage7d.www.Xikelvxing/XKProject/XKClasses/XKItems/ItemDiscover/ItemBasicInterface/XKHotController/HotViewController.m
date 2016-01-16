@@ -13,7 +13,7 @@
 #import "LoginViewController.h"
 #import "WriteCommentViewController.h"
 
-@interface HotViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface HotViewController ()<UITableViewDataSource, UITableViewDelegate, UMSocialUIDelegate>
 @property (nonatomic, strong) AVQuery *query;
 @end
 
@@ -46,27 +46,22 @@
 #pragma mark ---- 设置数据(上拉下拉刷新)
 - (void)setupRefresh
 {
-    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
-    [self.discoverV.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    __unsafe_unretained __typeof(self) weakSelf = self;
     
-    // 自动刷新(一进入程序就下拉刷新)
-    [self.discoverV.tableView headerBeginRefreshing];
+    self.discoverV.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf headerRereshing];
+    }];
     
-    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
-    [self.discoverV.tableView addFooterWithTarget:self action:@selector(footerRereshing)];
+    [self.discoverV.tableView.mj_header beginRefreshing];
     
-    // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
-    self.discoverV.tableView.headerPullToRefreshText = @"可以刷新了";
-    self.discoverV.tableView.headerReleaseToRefreshText = @"马上刷新";
-    self.discoverV.tableView.headerRefreshingText = @"正在刷新";
-    
-    self.discoverV.tableView.footerPullToRefreshText = @"加载更多";
-    self.discoverV.tableView.footerReleaseToRefreshText = @"马上刷新";
-    self.discoverV.tableView.footerRefreshingText = @"正在载入";
+    self.discoverV.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf footerRereshing];
+    }];
 }
 
 #pragma mark ---- 开始进入刷新状态
 - (void)headerRereshing {
+    
     // 加载新数据
     self.query = [AVQuery queryWithClassName:@"Moment"];
     [self.query whereKey:@"isHot" equalTo:@(YES)];
@@ -112,7 +107,7 @@
         [self.discoverV.tableView reloadData];
         
         // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
-        [self.discoverV.tableView headerEndRefreshing];
+        [self.discoverV.tableView.mj_header endRefreshing];
     });
 }
 
@@ -162,7 +157,7 @@
         [self.discoverV.tableView reloadData];
         
         // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
-        [self.discoverV.tableView footerEndRefreshing];
+        [self.discoverV.tableView.mj_footer endRefreshing];
     });
 }
 
@@ -201,6 +196,21 @@
     
     discoverDetailVC.model = self.dataArray[indexPath.row];
     
+    // 设置点赞状态
+    [discoverDetailVC sendLikeStatus:^(BOOL status) {
+        DiscoverTableViewCell *cell = [self.discoverV.tableView cellForRowAtIndexPath:indexPath];
+        
+        NSLog(@"status:%d",status);
+        
+        if (status) {
+            cell.heartButton.selected = YES;
+            [cell.heartButton setImage:[UIImage imageNamed:@"item_action_like_fill_sketch"] forState:UIControlStateNormal];
+        } else {
+            cell.heartButton.selected = NO;
+            [cell.heartButton setImage:[UIImage imageNamed:@"item_action_like_sketch"] forState:UIControlStateNormal];
+        }
+    }];
+    
     [self.navigationController pushViewController:discoverDetailVC animated:YES];
 }
 
@@ -213,11 +223,37 @@
 #pragma mark ---- cell里的控件方法
 // 分享
 - (void)shareButtonAction:(UIButton *)sender {
-    NSLog(@"分享");
+    
+    AVUser *user = [AVUser currentUser];
+    
+    if (user != nil) {
+        [UMSocialSnsService presentSnsIconSheetView:self
+                                             appKey:@"5662a16f67e58e8237000507"
+                                          shareText:@"稀客旅行"
+                                         shareImage:[UIImage imageNamed:@"icon"]
+                                    shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToTencent,UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToQQ,UMShareToRenren,UMShareToDouban,nil]
+                                           delegate:self];
+    } else {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"请先登录"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+
+}
+
+// 友盟代理方法
+-(BOOL)isDirectShareInIconActionSheet {
+    return YES;
 }
 
 // 评论
 - (void)commentsButtonAction:(UIButton *)sender {
+    
     AVUser *currentUser = [AVUser currentUser];
     if (currentUser != nil) {
         
@@ -228,21 +264,73 @@
         [self.navigationController pushViewController:writeCommentVC animated:YES];
     } else {
         
-        //        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        //
-        //        [userDefaults setObject:@"RecCellDetailViewController" forKey:@"controller"];
-        //
-        //        [userDefaults synchronize];
-        
         //缓存用户对象为空时，可打开用户注册界面…
-        LoginViewController *loginVC = [[LoginViewController alloc] init];
-        [self.navigationController pushViewController:loginVC animated:YES];
+//        LoginViewController *loginVC = [[LoginViewController alloc] init];
+//        [self.navigationController pushViewController:loginVC animated:YES];
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"请先登录"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
+    NSLog(@"1");
+}
+
+// 点赞
+- (void)heartButtonAction:(UIButton *)sender {
+    
+    AVUser *user = [AVUser currentUser];
+//    NSLog(@"userId:%@",user.objectId);
+    
+    DiscoverModel *model = self.dataArray[sender.tag - 105];
+    
+    if (user != nil) {
+        
+        if (sender.selected == NO) {
+            sender.selected = YES;
+            [sender setImage:[UIImage imageNamed:@"item_action_like_fill_sketch"] forState:UIControlStateNormal];
+            
+            AVObject *post = [AVObject objectWithClassName:@"MomentLike"];
+            [post setObject:model.objectId forKey:@"momentId"];
+            [post setObject:user.objectId forKey:@"userId"];
+            [post save];
+            
+            [self.discoverV.tableView reloadData];
+            
+        } else {
+            sender.selected = NO;
+            [sender setImage:[UIImage imageNamed:@"item_action_like_sketch"] forState:UIControlStateNormal];
+            
+            AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
+            [query whereKey:@"userId" equalTo:user.objectId];
+            [query whereKey:@"momentId" equalTo:model.objectId];
+            [query getFirstObjectInBackgroundWithBlock:^(AVObject *object, NSError *error) {
+                [object deleteInBackground];
+            }];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.discoverV.tableView reloadData];
+            });
+            
+        }
+        
+    } else {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"请先登录"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
-- (void)heartButtonAction:(UIButton *)senger {
-    NSLog(@"点赞");
-}
 
 #pragma mark ---- ViewAppear
 - (void)viewWillAppear:(BOOL)animated{
@@ -251,7 +339,7 @@
     self.navigationController.navigationBar.hidden = YES;
     self.tabBarController.tabBar.hidden = NO;
     //    [self.navigationController.navigationBar lt_setBackgroundColor:[NavBar_Color colorWithAlphaComponent:1]];
-
+ 
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

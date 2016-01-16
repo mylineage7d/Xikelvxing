@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "MyDetail.h"
 @interface MyDetailViewController : UIViewController
-@property (nonatomic,strong)MyDetail *myDetailV;
-@property (nonatomic,strong)NSString *userName;
-@property (nonatomic,strong)NSString *userHead;
-@property (nonatomic,assign)NSInteger state;
+@property (nonatomic, strong) MyDetail *myDetailV;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *userHead;
 
 @property (nonatomic, strong) NSDictionary *info;
-@property (nonatomic,strong)AVUser *user;
+@property (nonatomic, strong) AVUser *user;
+
+@property (nonatomic, copy) NSString *sourceVC;
 @end

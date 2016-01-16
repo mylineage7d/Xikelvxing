@@ -84,8 +84,8 @@
 //                        
 //                        [userDefaults synchronize];
                         
-                        [self loginSucceedWithUser:user authData:object];
-                        NSLog(@"%@",object);
+                        [self loginSucceedWithUser:user authData:object sourceVC:@"weChat"];
+                        NSLog(@"object:%@",object);
                     }
                 }];
             }
@@ -111,7 +111,7 @@
 //                    
 //                    [userDefaults synchronize];
                     
-                    [self loginSucceedWithUser:user authData:object];
+                    [self loginSucceedWithUser:user authData:object sourceVC:@"qq"];
                     NSLog(@"%@",object);
                 }
             }];
@@ -135,7 +135,7 @@
 //                    
 //                    [userDefaults synchronize];
                     
-                    [self loginSucceedWithUser:user authData:object];
+                    [self loginSucceedWithUser:user authData:object sourceVC:@"weibo"];
 //                    NSLog(@"objc:%@",object);
 //                    NSLog(@"user:%@",user);
                 }
@@ -145,30 +145,16 @@
 }
 
 // 跳转MyDetailController
-- (void)loginSucceedWithUser:(AVUser *)user authData:(NSDictionary *)authData{
+- (void)loginSucceedWithUser:(AVUser *)user authData:(NSDictionary *)authData sourceVC:(NSString *)sourceVC{
     
     MyDetailViewController *myDetailVC = [[MyDetailViewController alloc] init];
     
+    myDetailVC.sourceVC = sourceVC;
     myDetailVC.info = authData;
     myDetailVC.user = user;
-//    myDetailVC.state = self.state;
     
     [self.navigationController pushViewController:myDetailVC animated:YES];
 }
-
-//-(void)tencentDidNotLogin:(BOOL)cancelled
-//{
-//    if (cancelled){
-//        NSLog(@"用户取消登录");
-//    }else{
-//        NSLog(@"登录失败");
-//    }
-//}
-//
-//-(void)tencentDidNotNetWork
-//{
-//    NSLog(@"无网络连接，请设置网络");
-//}
 
 #pragma mark ---- 设置UINavigation
 - (void)setNavBar {

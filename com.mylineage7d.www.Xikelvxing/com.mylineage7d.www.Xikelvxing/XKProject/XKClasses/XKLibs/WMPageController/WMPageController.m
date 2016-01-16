@@ -176,6 +176,7 @@
     menuView.delegate = self;
     menuView.style = self.menuViewStyle;
     menuView.progressHeight = self.progressHeight;
+    
     if (self.titleFontName) {
         menuView.fontName = self.titleFontName;
     }
@@ -184,10 +185,12 @@
     }
     [self.view addSubview:menuView];
     self.menuView = menuView;
+    
     // 如果设置了初始选择的序号，那么选中该item
     if (self.selectIndex != 0) {
         [self.menuView selectItemAtIndex:self.selectIndex];
     }
+    
 #warning 有改动
 #pragma mark ---- 设置上传 ----
     menuView.cameraButton = [UIButton buttonWithFrame:CGRectMake(Max_Width - 34, 34, 24, 21) normalImageName:@"icon_camera_sketch" addTarget:self action:@selector(cameraButtonAction)];
@@ -195,6 +198,7 @@
     
 }
 
+// 点击上传按钮方法
 - (void)cameraButtonAction {
     UploadViewController *uploadVC = [[UploadViewController alloc] init];
     [self.navigationController pushViewController:uploadVC animated:YES];

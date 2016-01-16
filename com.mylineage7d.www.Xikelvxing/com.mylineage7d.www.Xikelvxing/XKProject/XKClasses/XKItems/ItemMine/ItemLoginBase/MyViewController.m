@@ -8,6 +8,7 @@
 
 #import "MyViewController.h"
 #import "LoginViewController.h"
+#import "MyDetailViewController.h"
 
 @interface MyViewController ()
 
@@ -24,7 +25,7 @@
     [super viewDidLoad];
     
     // 设置状态跳转
-//    [self setState];
+    [self setState];
     
     // 设置button事件
     [self setLogin];
@@ -32,12 +33,13 @@
 
 #pragma mark ---- 根据状态
 - (void)setState {
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-//    NSLog(@"%@",[userDefaults objectForKey:@"state"]);
-//    if ([[userDefaults objectForKey:@"state"] isEqualToString:@"login"]) {
-//        [self loginButtonAction];
-//    }
+    NSLog(@"%@",[userDefaults objectForKey:@"status"]);
+    if ([[userDefaults objectForKey:@"status"] isEqualToString:@"login"]) {
+        MyDetailViewController *mydetailVC = [[MyDetailViewController alloc] init];
+        [self.navigationController pushViewController:mydetailVC animated:YES];
+    }
 }
 
 #pragma mark ---- 设置button事件

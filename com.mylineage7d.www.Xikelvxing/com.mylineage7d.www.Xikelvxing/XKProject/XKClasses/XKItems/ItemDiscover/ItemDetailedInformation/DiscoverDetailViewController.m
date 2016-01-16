@@ -57,44 +57,49 @@
     AVUser *user = [AVUser currentUser];
     NSLog(@"userId:%@",user.objectId);
     
-    if (sender.selected == NO) {
-        sender.selected = YES;
-        [sender setImage:[UIImage imageNamed:@"action_love_fill_sketch"] forState:UIControlStateNormal];
-        
-        if (user != nil) {
+    if (user != nil) {
+        if (sender.selected == NO) {
+            sender.selected = YES;
+            [sender setImage:[UIImage imageNamed:@"action_love_fill_sketch"] forState:UIControlStateNormal];
+           
             AVObject *post = [AVObject objectWithClassName:@"MomentLike"];
             [post setObject:self.model.objectId forKey:@"momentId"];
             [post setObject:user.objectId forKey:@"userId"];
             [post save];
             
-            [self setDatas];
+            _block(sender.selected);
+            
+            [self setLikeV];
             
         } else {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
-                                                                           message:@"请先登录"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            sender.selected = NO;
+            [sender setImage:[UIImage imageNamed:@"action_love_sketch"] forState:UIControlStateNormal];
+            
+            AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
+            [query whereKey:@"userId" equalTo:user.objectId];
+            [query whereKey:@"momentId" equalTo:self.model.objectId];
+            [query getFirstObjectInBackgroundWithBlock:^(AVObject *object, NSError *error) {
+                [object deleteInBackground];
+            }];
+            
+            _block(sender.selected);
+    
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self setLikeV];
                 
-            }]];
-            [self presentViewController:alert animated:YES completion:nil];
+                NSInteger num = [[self.tagArray lastObject] integerValue];
+                [[self.detailV.scrollLikeV viewWithTag:num] removeFromSuperview];
+            });
         }
+        
     } else {
-        sender.selected = NO;
-        [sender setImage:[UIImage imageNamed:@"action_love_sketch"] forState:UIControlStateNormal];
-        
-        AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
-        [query whereKey:@"userId" equalTo:user.objectId];
-        [query whereKey:@"momentId" equalTo:self.model.objectId];
-        [query getFirstObjectInBackgroundWithBlock:^(AVObject *object, NSError *error) {
-            [object deleteInBackground];
-        }];
-        
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-            [self setDatas];
-            NSInteger num = [[self.tagArray lastObject] integerValue];
-            [[self.detailV.scrollV viewWithTag:num] removeFromSuperview];
-//        });
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"请先登录"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -120,8 +125,6 @@
     //设置view的frame，往上平移
     self.detailV.frame = CGRectMake(0,- keyboardRect.size.height + 64, Max_Width, self.detailV.frame.size.height);
     [UIView commitAnimations];
-    
-    [self.detailV layoutIfNeeded];
 }
 
 //键盘消失时
@@ -135,23 +138,31 @@
 #pragma mark ---- 设置数据
 - (void)setDatas{
     
+    // 头像
     [self.detailV.headImage sd_setImageWithURL:[NSURL URLWithString:self.model.avatarUrl]];
     
+    // 用户名
     self.detailV.nameLabel.text = self.model.username;
 
+    // 图片
     [self.detailV.main_pic sd_setImageWithURL:[NSURL URLWithString:self.model.imageUrls[0]]];
     
+    // 内容
     self.detailV.content.text = self.model.content;
     
+    // 点赞
+    [self setLikeV];
+}
+
+// 点赞
+- (void)setLikeV {
     AVUser *user = [AVUser currentUser];
     
     AVQuery *query = [AVQuery queryWithClassName:@"MomentLike"];
     [query whereKey:@"momentId" equalTo:self.model.objectId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            
-            NSLog(@"id:%@",self.model.objectId);
-            
+        
             NSMutableArray *userArray = [[NSMutableArray alloc] init];
             NSMutableArray *array = [[NSMutableArray alloc] init];
             
@@ -160,19 +171,19 @@
             }
             
             NSMutableArray *array2 = [self compareNum:array];
-//            NSLog(@"array:%@",array2);
-
-            for (int i = (int)array2.count; i > 0; i--) {
-                [userArray addObject:array2[i - 1]];
+            
+            // 倒序遍历
+            for (NSString *url in [array2 reverseObjectEnumerator]) {
+                [userArray addObject:url];
             }
-
-//            NSLog(@"user:%@",userArray);
             
             self.detailV.scrollLikeV.contentSize = CGSizeMake((10 + Button_Size) * userArray.count, Button_Size);
-   
+            
+            AVQuery *queryUser = [AVQuery queryWithClassName:@"_User"];
+            
             for (int i = 0; i < userArray.count; i++) {
-                AVQuery *query = [AVQuery queryWithClassName:@"_User"];
-                AVObject *post = [query getObjectWithId:userArray[i]];
+                
+                AVObject *post = [queryUser getObjectWithId:userArray[i]];
                 NSString *imageUrl = [post objectForKey:@"avatarUrl"];
                 
                 UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake((10 + Button_Size) * i, 0, Button_Size, Button_Size)];
@@ -189,11 +200,21 @@
                     if ([userArray[i] isEqualToString:user.objectId]) {
                         self.detailV.heartButton.selected = YES;
                         [self.detailV.heartButton setImage:[UIImage imageNamed:@"action_love_fill_sketch"] forState:UIControlStateNormal];
+                        _block(self.detailV.heartButton.selected);
                     }
                 }
             }
             
-            
+//            AVQuery *queryUser = [AVQuery queryWithClassName:@"_User"];
+//            
+//            for (int i = 0; i < userArray.count; i++) {
+//                
+//                AVObject *post = [queryUser getObjectWithId:userArray[i]];
+//                NSString *imageUrl = [post objectForKey:@"avatarUrl"];
+//                
+//                UIImageView *image = [self.detailV.scrollLikeV viewWithTag:[self.tagArray[i] integerValue]];
+//                [image sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+//            }
             
         } else {
             // 输出错误信息
@@ -203,6 +224,7 @@
     
     [self.detailV layoutIfNeeded];
 }
+
 
 //比较是否相等
 -(NSMutableArray *)compareNum:(NSMutableArray *)mArr
@@ -277,9 +299,8 @@
     return YES;
 }
 
-#pragma mark ---- 屏幕触摸方法
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.detailV.bottomTextField resignFirstResponder];
+- (void)sendLikeStatus:(LikeStatus)block {
+    _block = block;
 }
 
 #pragma mark ---- ViewAppear

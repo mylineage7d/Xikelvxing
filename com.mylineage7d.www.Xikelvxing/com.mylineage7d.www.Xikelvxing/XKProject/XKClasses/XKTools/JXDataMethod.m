@@ -313,24 +313,6 @@
         //请求完毕回到主线程
         [[NSOperationQueue mainQueue] addOperation:op];
         
-        
-        // 创建session对象
-        
-//        NSURLSession *session = [NSURLSession sharedSession];
-//        
-//        NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//            
-//            if (data != nil) {
-//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                NSLog(@"%@",dic);
-//            }
-//            NSLog(@"%@",error);
-//        }];
-//        
-//        // 一定要调用这个方法
-//        
-//        [task resume];
-        
     }
 }
 

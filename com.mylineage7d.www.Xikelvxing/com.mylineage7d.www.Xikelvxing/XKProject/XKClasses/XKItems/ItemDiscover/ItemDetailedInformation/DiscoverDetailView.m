@@ -33,6 +33,7 @@
     self.heartButton = [[UIButton alloc] init];
     self.scrollV = [UIScrollView new];
     self.scrollLikeV = [[UIScrollView alloc] init];
+    self.bottomV = [[UIView alloc] init];
     self.bottomTextField = [[UITextField alloc] init];
 //    self.bottomTextView = [UITextView new];
     self.bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -44,13 +45,14 @@
     [self.scrollV addSubview:self.main_pic];
     [self.scrollV addSubview:self.content];
     [self.scrollV addSubview:self.heartButton];
+    [self.scrollV bringSubviewToFront:self.heartButton];
     [self.scrollV addSubview:self.scrollLikeV];
     [self addSubview:self.bottomV];
     [self addSubview:self.bottomTextField];
 //    [self addSubview:self.bottomTextView];
     [self addSubview:self.bottomButton];
     
-    [self bringSubviewToFront:self.heartButton];
+    [self bringSubviewToFront:self.bottomV];
     [self bringSubviewToFront:self.bottomTextField];
 //    [self bringSubviewToFront:self.bottomTextView];
     [self bringSubviewToFront:self.bottomButton];
@@ -105,7 +107,7 @@
     self.bottomButton.backgroundColor = [UIColor colorWithRed:33/255.0 green:150/255.0 blue:243/255.0 alpha:1];
     
     if (CGRectGetMaxY(self.content.frame) > Max_Width) {
-        self.scrollV.contentSize  = CGSizeMake(Max_Width, CGRectGetMaxY(self.content.frame));
+        self.scrollV.contentSize  = CGSizeMake(Max_Width, CGRectGetMaxY(self.scrollLikeV.frame));
     }
 }
 
