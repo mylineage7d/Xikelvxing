@@ -197,7 +197,7 @@
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 
-                NSLog(@"id:%@",disModel.objectId);
+//                NSLog(@"id:%@",disModel.objectId);
                 
                 for (AVObject *ob in objects) {
 

@@ -78,12 +78,6 @@
                 [AVUser loginWithAuthData:object platform:AVOSCloudSNSPlatformWeiXin block:^(AVUser *user, NSError *error) {
                     if ([self filterError:error]) {
                         
-//                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//                        
-//                        [userDefaults setObject:@"weChat" forKey:@"SNS"];
-//                        
-//                        [userDefaults synchronize];
-                        
                         [self loginSucceedWithUser:user authData:object sourceVC:@"weChat"];
                         NSLog(@"object:%@",object);
                     }
@@ -105,12 +99,6 @@
             [AVUser loginWithAuthData:object platform:AVOSCloudSNSPlatformQQ block:^(AVUser *user, NSError *error) {
                 if ([self filterError:error]) {
                     
-//                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//                    
-//                    [userDefaults setObject:@"QQ" forKey:@"SNS"];
-//                    
-//                    [userDefaults synchronize];
-                    
                     [self loginSucceedWithUser:user authData:object sourceVC:@"qq"];
                     NSLog(@"%@",object);
                 }
@@ -128,12 +116,6 @@
         } else {
             [AVUser loginWithAuthData:object platform:AVOSCloudSNSPlatformWeiBo block:^(AVUser *user, NSError *error) {
                 if ([self filterError:error]) {
-                    
-//                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//                    
-//                    [userDefaults setObject:@"weibo" forKey:@"SNS"];
-//                    
-//                    [userDefaults synchronize];
                     
                     [self loginSucceedWithUser:user authData:object sourceVC:@"weibo"];
 //                    NSLog(@"objc:%@",object);

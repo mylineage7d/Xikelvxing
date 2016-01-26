@@ -318,6 +318,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.detailV.bottomTextField.delegate = nil;
+    self.navigationController.navigationBar.translucent = YES;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
